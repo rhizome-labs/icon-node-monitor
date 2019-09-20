@@ -1,3 +1,7 @@
+#####################################
+# ICON NODE MONITOR V0.1 BY RHIZOME #
+#####################################
+
 import datetime
 import os
 import re
@@ -33,7 +37,8 @@ api_endpoint = api_input + "/api/v1/avail/peer"
 #Store node IP as a variable.
 node_ip_pattern = re.compile(r'\:\/\/(.*)\:9000')
 for node_ip_pattern_match in re.findall(node_ip_pattern, api_input):
-    print(node_ip_pattern_match)
+	pass
+    #print(node_ip_pattern_match)
 
 #Create first request to ping node.
 response1 = requests.get(api_endpoint)
@@ -51,7 +56,8 @@ block_height_pattern = re.compile(r'\"block_height\"\:([0-9]*)\,\"')
 
 #Extract block height and print block_height number.
 for block_height_pattern_match1 in re.findall(block_height_pattern, data1):
-    print(block_height_pattern_match1)
+	pass
+    #print(block_height_pattern_match1)
 
 #Wait before making the next API request.
 time.sleep(2)
@@ -69,18 +75,19 @@ elif response2.status_code == 200:
 
 #Extract block height and print block_height number.
 for block_height_pattern_match2 in re.findall(block_height_pattern, data2):
-    print(block_height_pattern_match2)
+	pass
+    #print(block_height_pattern_match2)
 
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height_pattern_match1 == block_height_pattern_match2:
-	print("Uh oh. New blocks are not being produced.")
+	#print("Uh oh. New blocks are not being produced.")
 	slack_alert_good()
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 elif block_height_pattern_match1 < block_height_pattern_match2:
-	print("Yay! New blocks are being produced.")
+	#print("Yay! New blocks are being produced.")
 	slack_alert_bad()
 #If any other condition is satisfied, something is very wrong.
 else:
-	print("Something is very, very wrong.")
+	print("REKT.")
 
 exit()
