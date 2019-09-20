@@ -13,7 +13,7 @@ def slack_alert_good():
 	client = slack.WebClient(token=slack_token)
 	client.chat_postMessage(
 	  channel="infrastructure-alerts",
-	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "." + "\n" + "Please check `" + api_input + "` as soon as possible."
+	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "."
 	)
 
 def slack_alert_bad():
@@ -21,7 +21,7 @@ def slack_alert_bad():
 	client = slack.WebClient(token=slack_token)
 	client.chat_postMessage(
 	  channel="infrastructure-alerts",
-	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "." + "\n" + "Please check `" + api_input + "` as soon as possible."
+	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "."
 	)
 
 #Ask for API endpoint.
