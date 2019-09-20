@@ -13,13 +13,13 @@ import time
 dt = datetime.datetime.now()
 
 #Declare functions for Slack integration.
-def slack_alert_good():
-	slack_token = os.environ["SLACK_API_TOKEN"]
-	client = slack.WebClient(token=slack_token)
-	client.chat_postMessage(
-	  channel="infrastructure-alerts",
-	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "."
-	)
+#def slack_alert_good():
+#	slack_token = os.environ["SLACK_API_TOKEN"]
+#	client = slack.WebClient(token=slack_token)
+#	client.chat_postMessage(
+#	  channel="infrastructure-alerts",
+#	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "."
+#	)
 
 def slack_alert_bad():
 	slack_token = os.environ["SLACK_API_TOKEN"]
@@ -82,7 +82,7 @@ for block_height_pattern_match2 in re.findall(block_height_pattern, data2):
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height_pattern_match1 == block_height_pattern_match2:
 	#print("Uh oh. New blocks are not being produced.")
-	slack_alert_good()
+	#slack_alert_good()
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 elif block_height_pattern_match1 < block_height_pattern_match2:
 	#print("Yay! New blocks are being produced.")
