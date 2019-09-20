@@ -12,6 +12,7 @@ import time
 #Declare current date and time.
 dt = datetime.datetime.now()
 
+#Declare functions for Slack integration.
 def slack_alert_good():
 	slack_token = os.environ["SLACK_API_TOKEN"]
 	client = slack.WebClient(token=slack_token)
