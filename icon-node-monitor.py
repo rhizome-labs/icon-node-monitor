@@ -31,7 +31,7 @@ def slack_alert_bad():
 
 #Ask for API endpoint.
 #api_input = input("What is your API endpoint? (e.g. http://104.196.209.29:9000) ")
-api_input = "http://104.196.209.29:9000"
+api_input = "http://34.74.169.241:9000"
 api_endpoint = api_input + "/api/v1/avail/peer"
 #print(api_endpoint)
 
@@ -81,13 +81,13 @@ for block_height_pattern_match2 in re.findall(block_height_pattern, data2):
 
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height_pattern_match1 == block_height_pattern_match2:
-	pass
 	#print("Uh oh. New blocks are not being produced.")
-	#slack_alert_good()
+	slack_alert_bad()
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 elif block_height_pattern_match1 < block_height_pattern_match2:
+	pass
 	#print("Yay! New blocks are being produced.")
-	slack_alert_bad()
+	#slack_alert_good()
 #If any other condition is satisfied, something is very wrong.
 else:
 	print("REKT.")
