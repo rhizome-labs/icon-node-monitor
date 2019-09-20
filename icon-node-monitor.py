@@ -81,6 +81,7 @@ for block_height_pattern_match2 in re.findall(block_height_pattern, data2):
 
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height_pattern_match1 == block_height_pattern_match2:
+	pass
 	#print("Uh oh. New blocks are not being produced.")
 	#slack_alert_good()
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
