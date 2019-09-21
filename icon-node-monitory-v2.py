@@ -66,10 +66,6 @@ for block_height_pattern_match1 in re.findall(block_height_pattern, data1):
 for block_height_pattern_match2 in re.findall(block_height_pattern, data2):
 	pass
 
-#Print block heights from both responses.
-print(block_height_pattern_match1)
-print(block_height_pattern_match2)
-
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height_pattern_match1 == block_height_pattern_match2:
 	#print("Uh oh. New blocks are not being produced.")
@@ -84,3 +80,4 @@ else:
 	print("REKT.")
 
 exit()
+
