@@ -1,4 +1,6 @@
-# icon-node-monitoring-tool
+# ICON Node Monitor
+
+ICON Node Monitor is a Python tool that can be used to monitor your ICON citizen or P-Rep node for downtime, specifically a non-incremental block height.
 
 ## Usage
 
