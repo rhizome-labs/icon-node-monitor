@@ -29,10 +29,6 @@ def slack_alert_bad():
 	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "RHIZOME node `" + node_ip_pattern_match + "` is stuck at block height " + block_height_pattern_match1 + "."
 	)
 
-#Ask for API endpoint.
-#api_input = input("What is your API endpoint? (e.g. http://104.196.209.29:9000) ")
-#api_input = "http://104.196.209.29:9000"
-
 #Pass API endpoint from environment variable.
 api_input = os.environ["API_ENDPOINT"]
 #Add "http://" or "https://" if not specified in the environment variable.
