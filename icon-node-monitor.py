@@ -31,8 +31,16 @@ def slack_alert_bad():
 
 #Ask for API endpoint.
 #api_input = input("What is your API endpoint? (e.g. http://104.196.209.29:9000) ")
-api_input = "http://104.196.209.29:9000"
-api_endpoint = api_input + "/api/v1/avail/peer"
+#api_input = "http://104.196.209.29:9000"
+
+#Pass API endpoint from environment variable.
+api_input = os.environ["API_ENDPOINT"]
+#Add "http://" or "https://" if not specified in the environment variable.
+if "http://" in api_input or "https://" in api_input:
+	api_endpoint = api_input + "/api/v1/avail/peer"
+else:
+	api_endpoint = "http://" + api_input + "/api/v1/avail/peer"
+
 #print(api_endpoint)
 
 #Make first response to API endpoint.
@@ -80,4 +88,3 @@ else:
 	print("REKT.")
 
 exit()
-
