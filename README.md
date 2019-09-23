@@ -4,6 +4,15 @@ ICON Node Monitor is a Python tool that can be used to monitor your ICON citizen
 
 In most cases, ICON Node Monitor's method of determining if a node is operational is more reliable than simply checking the node's HTTP response code.
 
+## Dependencies
+* Python 3.7.x
+* Python datetime library
+* Python os library
+* Python re library
+* Python requests library
+* Python slack library
+* Python time library
+
 ## Usage
 
 ICON Node Monitor can be executed with the command below.
