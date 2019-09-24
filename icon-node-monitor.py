@@ -70,6 +70,7 @@ if block_height1 == block_height2:
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 else:
 	#print("Yay! New blocks are being produced.")
-	slack_alert_bad()
+	#slack_alert_good()
+	pass
 
 exit()
