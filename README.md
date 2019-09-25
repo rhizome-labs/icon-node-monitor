@@ -6,15 +6,20 @@ In most cases, ICON Node Monitor's method of determining if a node is operationa
 
 ## Dependencies
 * Python 3.7.x
-* Python datetime library
-* Python os library
-* Python re library
-* Python requests library
-* Python slack library
-* Python telegram library
-* Python time library
+* Python datetime module
+* Python os module
+* Python re module
+* Python requests module
+* Python slackclient module
+* Python python-telegram-bot module
+* Python time module
 
 ## Usage
+Install pip3, and install the necessary modules.
+```
+sudo apt-get install python3-pip 
+sudo pip3 install python-telegram-bot requests slackclient
+```
 
 ICON Node Monitor can be executed with the command below.
 
