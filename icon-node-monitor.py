@@ -1,5 +1,5 @@
 ###################################
-# ICON NODE MONITOR V2 BY RHIZOME #
+# ICON NODE MONITOR V0.1 BY RHIZOME #
 ###################################
 
 import datetime
