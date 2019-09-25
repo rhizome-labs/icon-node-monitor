@@ -1,11 +1,11 @@
 
 
-██████╗ ██╗  ██╗██╗███████╗ ██████╗ ███╗   ███╗███████╗
-██╔══██╗██║  ██║██║╚══███╔╝██╔═══██╗████╗ ████║██╔════╝
-██████╔╝███████║██║  ███╔╝ ██║   ██║██╔████╔██║█████╗  
-██╔══██╗██╔══██║██║ ███╔╝  ██║   ██║██║╚██╔╝██║██╔══╝  
-██║  ██║██║  ██║██║███████╗╚██████╔╝██║ ╚═╝ ██║███████╗
-╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
+#██████╗ ██╗  ██╗██╗███████╗ ██████╗ ███╗   ███╗███████╗
+#██╔══██╗██║  ██║██║╚══███╔╝██╔═══██╗████╗ ████║██╔════╝
+#██████╔╝███████║██║  ███╔╝ ██║   ██║██╔████╔██║█████╗  
+#██╔══██╗██╔══██║██║ ███╔╝  ██║   ██║██║╚██╔╝██║██╔══╝  
+#██║  ██║██║  ██║██║███████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+#╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
 
                                                        
 #ICON NODE MONITOR
@@ -23,30 +23,6 @@ import time
 
 #Declare current date and time.
 dt = datetime.datetime.utcnow()
-
-#Create Slack alert messages.
-def slack_alert_good():
-	slack_api_token = os.environ["SLACK_API_TOKEN"]
-	slack_bot = slack.WebClient(token=slack_api_token)
-	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_good)
-
-def slack_alert_bad():
-	slack_api_token = os.environ["SLACK_API_TOKEN"]
-	slack_bot = slack.WebClient(token=slack_api_token)
-	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_bad)
-
-#Create Telegram alert messages.
-def tg_alert_good():
-	tg_bot_token = os.environ["TG_BOT_TOKEN"]
-	tg_chat_id = os.environ["TG_CHAT_ID"]
-	tg_bot = telegram.Bot(token=tg_bot_token)
-	tg_bot.send_message(chat_id=tg_chat_id, text=alert_good, parse_mode=telegram.ParseMode.MARKDOWN)
-
-def tg_alert_bad():
-	tg_bot_token = os.environ["TG_BOT_TOKEN"]
-	tg_chat_id = os.environ["TG_CHAT_ID"]
-	tg_bot = telegram.Bot(token=tg_bot_token)
-	bot.send_message(chat_id=tg_chat_id, text=alert_bad, parse_mode=telegram.ParseMode.MARKDOWN)
 
 #Exit if no API endpoint is provided.
 if os.environ["API_ENDPOINT"] == "":
@@ -69,11 +45,20 @@ else:
 #print(api_endpoint)
 
 #Make first response to API endpoint.
-response1 = requests.get(api_endpoint, timeout=30)
+try:
+	response1 = requests.get(api_endpoint, timeout=5)
+except requests.Timeout as err:
+	print("Timeout Error: " + api_endpoint + " is not responding.")
+	exit()
+
 #Wait 2 seconds.
 time.sleep(2)
 #Make second response to API endpoint.
-response2 = requests.get(api_endpoint, timeout=30)
+try:
+	response2 = requests.get(api_endpoint, timeout=5)
+except requests.Timeout as err:
+	print("Timeout Error: " + api_endpoint + " is not responding.")
+	exit()
 
 #Encode response1 and response2 JSON, and extract block height.
 block_height1 = json.loads(response1.content.decode())['block_height']
@@ -96,6 +81,27 @@ alert_bad = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " +
 #Remove markdown formatting for Terminal alerts.
 alert_good_raw = re.sub('[`*]', '', alert_good)
 alert_bad_raw = re.sub('[`*]', '', alert_bad)
+
+#Map API tokens for Slack and Telegram.
+slack_api_token = os.environ["SLACK_API_TOKEN"]
+slack_bot = slack.WebClient(token=slack_api_token)
+tg_bot_token = os.environ["TG_BOT_TOKEN"]
+tg_chat_id = os.environ["TG_CHAT_ID"]
+tg_bot = telegram.Bot(token=tg_bot_token)
+
+#Create Slack alert messages.
+def slack_alert_good():
+	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_good)
+
+def slack_alert_bad():
+	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_bad)
+
+#Create Telegram alert messages.
+def tg_alert_good():
+	tg_bot.send_message(chat_id=tg_chat_id, text=alert_good, parse_mode=telegram.ParseMode.MARKDOWN)
+
+def tg_alert_bad():
+	bot.send_message(chat_id=tg_chat_id, text=alert_bad, parse_mode=telegram.ParseMode.MARKDOWN)
 
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height1 == block_height2:
