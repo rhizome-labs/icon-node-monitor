@@ -11,6 +11,7 @@ In most cases, ICON Node Monitor's method of determining if a node is operationa
 * Python re library
 * Python requests library
 * Python slack library
+* Python telegram library
 * Python time library
 
 ## Usage
@@ -18,11 +19,13 @@ In most cases, ICON Node Monitor's method of determining if a node is operationa
 ICON Node Monitor can be executed with the command below.
 
 ```
-SLACK_API_TOKEN="xoxb-your-slack-api-token" API_ENDPOINT="http://YOUR-IP-ADDRESS:9000" python3 icon-node-monitor.py
+API_ENDPOINT="http://YOUR-IP-OR-DOMAIN:9000" SLACK_API_TOKEN="xoxb-your-slack-api-token" TG_BOT_TOKEN="your-tg-bot-token" TG_CHAT_ID="-your-tg-chat-id" python3 icon-node-monitor.py
 ```
 
-At the moment, there are two required environment variables that must be passed from the OS.
-* SLACK_API_TOKEN - This token is used to send alert messages to Slack.
-* API_ENDPOINT - This token is used to specify the API endpoint of your node.
+Below are the environment variables required to connect to external alert services.
+* `API_ENDPOINT` - This token is used to specify the API endpoint of your node.
+* `SLACK_API_TOKEN` - This token is used to send alert messages to Slack.
+* `TG_BOT_TOKEN` - This token is used to specify the API endpoint of your Telegram bot.
+* `TG_CHAT_ID` - This token is used to specify the chat ID of your Telegram bot's channel or group.
 
 The recommended deployment for ICON Node Monitor is via a recurring cron job.
