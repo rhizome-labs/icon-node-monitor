@@ -39,5 +39,5 @@ Below are the environment variables required to connect to external alert servic
 The recommended deployment for ICON Node Monitor is via a recurring cron job.
 
 ```
-* * * * * API_ENDPOINT="http://YOUR-IP-OR-DOMAIN:9000" SLACK_API_TOKEN="xoxb-your-slack-api-token" TG_BOT_TOKEN="your-tg-bot-token" TG_CHAT_ID="-your-tg-chat-id" python3 /path/to/icon-node-monitor.py >/dev/null 2>&1
+* * * * * API_ENDPOINT="http://YOUR-IP-OR-DOMAIN:9000" SLACK_API_TOKEN="xoxb-your-slack-api-token" SLACK_CHANNEL_ID="your-slack-channel" TG_BOT_TOKEN="your-tg-bot-token" TG_CHAT_ID="-your-tg-chat-id" python3 /path/to/icon-node-monitor.py >/dev/null 2>&1
 ```
