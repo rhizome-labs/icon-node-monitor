@@ -22,9 +22,9 @@ API_ENDPOINT="http://YOUR-IP-OR-DOMAIN:9000" SLACK_API_TOKEN="xoxb-your-slack-ap
 ```
 
 Below are the environment variables required to connect to external alert services.
-* API_ENDPOINT - This token is used to specify the API endpoint of your node.
-* SLACK_API_TOKEN - This token is used to send alert messages to Slack.
-* TG_BOT_TOKEN - This token is used to specify the API endpoint of your Telegram bot.
-* TG_CHAT_ID - This token is used to specify the chat ID of your Telegram bot's channel or group.
+* `API_ENDPOINT` - This token is used to specify the API endpoint of your node.
+* `SLACK_API_TOKEN` - This token is used to send alert messages to Slack.
+* `TG_BOT_TOKEN` - This token is used to specify the API endpoint of your Telegram bot.
+* `TG_CHAT_ID` - This token is used to specify the chat ID of your Telegram bot's channel or group.
 
 The recommended deployment for ICON Node Monitor is via a recurring cron job.
