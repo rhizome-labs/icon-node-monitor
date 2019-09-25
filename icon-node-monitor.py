@@ -1,13 +1,12 @@
-
-
-#██████╗ ██╗  ██╗██╗███████╗ ██████╗ ███╗   ███╗███████╗
-#██╔══██╗██║  ██║██║╚══███╔╝██╔═══██╗████╗ ████║██╔════╝
-#██████╔╝███████║██║  ███╔╝ ██║   ██║██╔████╔██║█████╗  
-#██╔══██╗██╔══██║██║ ███╔╝  ██║   ██║██║╚██╔╝██║██╔══╝  
-#██║  ██║██║  ██║██║███████╗╚██████╔╝██║ ╚═╝ ██║███████╗
-#╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-
-                                                       
+###########################################################
+##██████╗ ██╗  ██╗██╗███████╗ ██████╗ ███╗   ███╗███████╗##
+##██╔══██╗██║  ██║██║╚══███╔╝██╔═══██╗████╗ ████║██╔════╝##
+##██████╔╝███████║██║  ███╔╝ ██║   ██║██╔████╔██║█████╗  ##
+##██╔══██╗██╔══██║██║ ███╔╝  ██║   ██║██║╚██╔╝██║██╔══╝  ##
+##██║  ██║██║  ██║██║███████╗╚██████╔╝██║ ╚═╝ ██║███████╗##
+##╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝##
+###########################################################
+                                                     
 #ICON NODE MONITOR
 #VERSION: 0.1
 #CONTACT: HELLO@RHIZOMEICX.COM
@@ -23,6 +22,14 @@ import time
 
 #Declare current date and time.
 dt = datetime.datetime.utcnow()
+
+#Map API tokens for Slack and Telegram.
+slack_api_token = os.environ["SLACK_API_TOKEN"]
+slack_bot = slack.WebClient(token=slack_api_token)
+slack_channel_id = os.environ["SLACK_CHANNEL_ID"]
+tg_bot_token = os.environ["TG_BOT_TOKEN"]
+tg_chat_id = os.environ["TG_CHAT_ID"]
+tg_bot = telegram.Bot(token=tg_bot_token)
 
 #Exit if no API endpoint is provided.
 if os.environ["API_ENDPOINT"] == "":
@@ -44,11 +51,17 @@ else:
 
 #print(api_endpoint)
 
+#Create alert message for timeouts.
+alert_timeout = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S UTC") + "*" "\n" + "Timeout Error: `" + api_input + "` is not responding."
+alert_timeout_raw = re.sub('[`*]', '', alert_timeout)
+
 #Make first response to API endpoint.
 try:
 	response1 = requests.get(api_endpoint, timeout=5)
 except requests.Timeout as err:
-	print("Timeout Error: " + api_endpoint + " is not responding.")
+	print(alert_timeout_raw)
+	slack_bot.chat_postMessage(channel=slack_channel_id, text=alert_timeout)
+	tg_bot.send_message(chat_id=tg_chat_id, text=alert_timeout, parse_mode=telegram.ParseMode.MARKDOWN)
 	exit()
 
 #Wait 2 seconds.
@@ -57,7 +70,9 @@ time.sleep(2)
 try:
 	response2 = requests.get(api_endpoint, timeout=5)
 except requests.Timeout as err:
-	print("Timeout Error: " + api_endpoint + " is not responding.")
+	print(alert_timeout_raw)
+	slack_bot.chat_postMessage(channel=slack_channel_id, text=alert_timeout)
+	tg_bot.send_message(chat_id=tg_chat_id, text=alert_timeout, parse_mode=telegram.ParseMode.MARKDOWN)
 	exit()
 
 #Encode response1 and response2 JSON, and extract block height.
@@ -75,19 +90,12 @@ if node_ip1 == node_ip2:
 else:
 	node_ip = "`" + node_ip1 + "`"+ " and " + "`" + node_ip2 + "`"
 
-#Declare alert messages.
-alert_good = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + node_ip + " is operational."
-alert_bad = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + api_input + " is stuck at block height " + str(block_height1) + "." + "\n" + "Please check the following server(s): " + node_ip + "."
+#Declare alert messages for requests that do not time out.
+alert_good = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S UTC") + "*" "\n" + "Node " + node_ip + " is operational."
+alert_bad = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S UTC") + "*" "\n" + "Node " + api_input + " is stuck at block height " + str(block_height1) + "." + "\n" + "Please check the following server(s): " + node_ip + "."
 #Remove markdown formatting for Terminal alerts.
 alert_good_raw = re.sub('[`*]', '', alert_good)
 alert_bad_raw = re.sub('[`*]', '', alert_bad)
-
-#Map API tokens for Slack and Telegram.
-slack_api_token = os.environ["SLACK_API_TOKEN"]
-slack_bot = slack.WebClient(token=slack_api_token)
-tg_bot_token = os.environ["TG_BOT_TOKEN"]
-tg_chat_id = os.environ["TG_CHAT_ID"]
-tg_bot = telegram.Bot(token=tg_bot_token)
 
 #Create Slack alert messages.
 def slack_alert_good():
