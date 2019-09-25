@@ -12,7 +12,7 @@ import telegram
 import time
 
 #Declare current date and time.
-dt = datetime.datetime.now()
+dt = datetime.datetime.utcnow()
 
 #Create Slack alert messages.
 def slack_alert_good():
