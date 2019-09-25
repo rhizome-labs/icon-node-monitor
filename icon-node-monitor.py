@@ -1,6 +1,6 @@
-#####################################
+###################################
 # ICON NODE MONITOR V2 BY RHIZOME #
-#####################################
+###################################
 
 import datetime
 import json
@@ -8,27 +8,44 @@ import os
 import re
 import requests
 import slack
+import telegram
 import time
 
 #Declare current date and time.
 dt = datetime.datetime.now()
 
-#Create Slack message.
+#Create Slack alert messages.
 def slack_alert_good():
-	slack_token = os.environ["SLACK_API_TOKEN"]
-	client = slack.WebClient(token=slack_token)
-	client.chat_postMessage(
-	  channel="infrastructure-alerts",
-	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + node_ip + " is operational."
-	)
+	slack_api_token = os.environ["SLACK_API_TOKEN"]
+	slack_bot = slack.WebClient(token=slack_api_token)
+	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_good)
 
 def slack_alert_bad():
-	slack_token = os.environ["SLACK_API_TOKEN"]
-	client = slack.WebClient(token=slack_token)
-	client.chat_postMessage(
-	  channel="infrastructure-alerts",
-	  text="*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + "`" + api_input + "`" " is stuck at block height " + str(block_height1) + "." + "\n" + "Please check the following server(s): " + node_ip + "."
-	)
+	slack_api_token = os.environ["SLACK_API_TOKEN"]
+	slack_bot = slack.WebClient(token=slack_api_token)
+	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_bad)
+
+#Create Telegram alert messages.
+def tg_alert_good():
+	tg_bot_token = os.environ["TG_BOT_TOKEN"]
+	tg_chat_id = os.environ["TG_CHAT_ID"]
+	tg_bot = telegram.Bot(token=tg_bot_token)
+	tg_bot.send_message(chat_id=tg_chat_id, text=alert_good, parse_mode=telegram.ParseMode.MARKDOWN)
+
+def tg_alert_bad():
+	tg_bot_token = os.environ["TG_BOT_TOKEN"]
+	tg_chat_id = os.environ["TG_CHAT_ID"]
+	tg_bot = telegram.Bot(token=tg_bot_token)
+	bot.send_message(chat_id=tg_chat_id, text=alert_bad, parse_mode=telegram.ParseMode.MARKDOWN)
+
+#Exit if no API endpoint is provided.
+if os.environ["API_ENDPOINT"] == "":
+		time.sleep(1)
+		print("ERROR! Please specify your API endpoint as an environment variable (e.g. API_ENDPOINT=\"https://ctz.rhizomeicx.com\").")
+		time.sleep(1)
+		print("Exiting now...")
+		time.sleep(2)
+		exit()
 
 #Pass API endpoint from environment variable.
 api_input = os.environ["API_ENDPOINT"]
@@ -63,14 +80,39 @@ if node_ip1 == node_ip2:
 else:
 	node_ip = "`" + node_ip1 + "`"+ " and " + "`" + node_ip2 + "`"
 
+#Declare alert messages.
+alert_good = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + node_ip + " is operational."
+alert_bad = "*ALERT: " + dt.strftime("%Y-%m-%d %H:%M:%S") + "*" "\n" + "Node " + api_input + " is stuck at block height " + str(block_height1) + "." + "\n" + "Please check the following server(s): " + node_ip + "."
+#Remove markdown formatting for Terminal alerts.
+alert_good_raw = re.sub('[`*]', '', alert_good)
+alert_bad_raw = re.sub('[`*]', '', alert_bad)
+
 #If the block height of request 1 and 2 are equal, let the user know blocks aren't being produced.
 if block_height1 == block_height2:
-	#print("Uh oh. New blocks are not being produced.")
-	slack_alert_bad()
+	#Print alert in Terminal.
+	print(alert_bad_raw)
+	#Send Slack alert if Slack API token is specified.
+	if os.environ["SLACK_API_TOKEN"] == "":
+		print("Slack token is not configured.")
+	else:
+		slack_alert_bad()
+	#Send Telegram alert if Telegram API token is specified.
+	if os.environ["TG_BOT_TOKEN"] == "" or os.environ["TG_CHAT_ID"] == "":
+		print("Telegram token is not configured.")
+	else:
+		tg_alert_bad()
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 else:
-	#print("Yay! New blocks are being produced.")
-	#slack_alert_good()
-	pass
-
+	#Print alert in Terminal.
+	print(alert_good_raw)
+	#Send Slack alert if Slack API token is specified.
+	if os.environ["SLACK_API_TOKEN"] == "":
+		print("Slack token is not configured.")
+	else:
+		slack_alert_good()
+	#Send Telegram alert if Telegram API token is specified.
+	if os.environ["TG_BOT_TOKEN"] == "" or os.environ["TG_CHAT_ID"] == "":
+		print("Telegram token is not configured.")
+	else:
+		tg_alert_good()
 exit()
