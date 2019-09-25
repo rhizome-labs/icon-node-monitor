@@ -15,8 +15,9 @@ In most cases, ICON Node Monitor's method of determining if a node is operationa
 * Python time module
 
 ## Usage
-Install pip3, and install the necessary modules.
+Install Python 3.7, pip3, and install the necessary modules.
 ```
+sudo apt-get install python3.7
 sudo apt-get install python3-pip 
 sudo pip3 install python-telegram-bot requests slackclient
 ```
