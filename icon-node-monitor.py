@@ -99,10 +99,10 @@ alert_bad_raw = re.sub('[`*]', '', alert_bad)
 
 #Create Slack alert messages.
 def slack_alert_good():
-	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_good)
+	slack_bot.chat_postMessage(channel=slack_channel_id, text=alert_good)
 
 def slack_alert_bad():
-	slack_bot.chat_postMessage(channel="infrastructure-alerts", text=alert_bad)
+	slack_bot.chat_postMessage(channel=slack_channel_id, text=alert_bad)
 
 #Create Telegram alert messages.
 def tg_alert_good():
