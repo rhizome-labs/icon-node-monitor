@@ -101,7 +101,6 @@ if block_height1 == block_height2:
 		print("Telegram token is not configured.")
 	else:
 		tg_alert_bad()
-		
 #If the block height of request 1 is less than 2, let the user know blocks are being produced.
 else:
 	#Print alert in Terminal.
