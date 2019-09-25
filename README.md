@@ -11,6 +11,7 @@ In most cases, ICON Node Monitor's method of determining if a node is operationa
 * Python re library
 * Python requests library
 * Python slack library
+* Python telegram library
 * Python time library
 
 ## Usage
