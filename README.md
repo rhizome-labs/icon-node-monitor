@@ -1,6 +1,6 @@
 # ICON Node Monitor
 
-ICON Node Monitor is a Python tool that can be used to monitor your ICON citizen or P-Rep node for downtime, specifically a non-incremental block height. To do this, ICON Node Monitor makes two requests to your node's API endpoint, and extracts the `block_height` number from the response. If the block height of both requests are the equal, an alert is sent to Slack.
+ICON Node Monitor is a Python tool that can be used to monitor your ICON citizen or P-Rep node for downtime, specifically a non-incremental block height. To do this, ICON Node Monitor makes two requests to your node's API endpoint, and extracts the `block_height` number from the response. If the block height of both requests are equal, an alert is sent to Slack.
 
 In most cases, ICON Node Monitor's method of determining if a node is operational is more reliable than simply checking the node's HTTP response code.
 
