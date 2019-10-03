@@ -1,2 +1,14 @@
 
 .DS_Store
+
+__pycache__
+
+.idea/
+.pytest_cache
+
+*.tfstate/
+*.tfstate.backup
+*.tfplan
+
+.terragrunt-cache/
+.terraform
