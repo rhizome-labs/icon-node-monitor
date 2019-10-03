@@ -1,8 +1,19 @@
 data "aws_caller_identity" "this" {}
 data "aws_region" "this" {}
 
+locals {
+  name = join("", [var.name, var.environment])
+
+  common_tags = {
+    "Terraform" = true
+    "Environment" = var.environment
+  }
+
+  tags = merge(var.tags, local.common_tags)
+}
+
 resource "aws_iam_role" "this" {
-  name = "iam_for_lambda"
+  name = "${local.name}LambdaAssumeRole"
 
   assume_role_policy = <<EOF
 {

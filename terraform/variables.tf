@@ -1,4 +1,10 @@
-variable "name" {}
+variable "name" {
+  type = string
+  default = "RhizomeNodeMonitor"
+}
+variable "environment" {
+  type = string
+}
 
 variable "subnet_ids" {
   type = "list"
@@ -6,6 +12,11 @@ variable "subnet_ids" {
 
 variable "security_group_ids" {
   type = "list"
+}
+
+variable "tags" {
+  type = map(string)
+  default = {}
 }
 
 variable "api_endpoint" {}
